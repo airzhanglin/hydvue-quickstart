@@ -1,0 +1,57 @@
+{
+  "name": "app_template",
+  "version": "1.0.0",
+  "author": "zhang <1015448230@qq.com>",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:review": "vue-cli-service build --mode review",
+    "build:staging": "vue-cli-service build --mode staging",
+    "build:production": "vue-cli-service build --mode production"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "cssnano": "^4.1.10",
+    "cssnano-preset-advanced": "^4.0.7",
+    "postcss-aspect-ratio-mini": "^1.0.1",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^12.0.1",
+    "postcss-px-to-viewport": "^1.1.0",
+    "postcss-url": "^8.0.0",
+    "postcss-viewport-units": "^0.1.6",
+    "postcss-write-svg": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-service": "^3.5.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.1.0",
+    "compression-webpack-plugin": "^2.0.0",
+    "ali-oss": "^6.0.1",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

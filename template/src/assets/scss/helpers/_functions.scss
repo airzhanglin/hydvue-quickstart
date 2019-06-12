@@ -1,0 +1,9 @@
+@function oss-bg-config($folder, $img, $oss-handler) {
+  @if $folder == '' {
+    // public文件夹下的资源
+    @return $static-url + $img + $oss-handler;
+  } @else {
+    // assets文件夹下的资源，打包后会统一放在img目录下，所以一定避免相同命名，最好带上模块前缀
+    @return $static-url + 'img/' + $img + $oss-handler;
+  }
+}

@@ -1,0 +1,56 @@
+stages:
+  - build
+  - test
+  - deploy
+before_script:
+  - uname -a
+  - pwd
+  - whoami
+  # Install ssh-agent if not already installed, it is required by Docker.
+  # (change apt-get to yum if you use a CentOS-based image)
+  - 'which ssh-agent || ( apt-get install openssh-client -y )'
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  # error: https://gitlab.com/gitlab-examples/ssh-private-key/issues/1
+  - ssh-add <(echo "$SSH_PRIVATE_KEY_DEV")
+  # - ssh-add <(echo "$SSH_PRIVATE_KEY_DEV" | base64 --decode)
+  # For Docker builds disable host key checking. Be aware that by adding that
+  # you are suspectible to man-in-the-middle attacks.
+  # WARNING: Use this only with the Docker executor, if you use it with shell
+  # you will overwrite your user's SSH config.
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - npm install -g cnpm --registry=https://registry.npm.taobao.org
+  - cnpm install -g @vue/cli
+
+# build_job:
+#   stage: build
+#   only:
+#     - review
+#   script:
+#   - pwd
+#   - cd /builds/hzx/sl_datav
+#   - npm install
+#   - npm run serve
+#   - npm run build
+deploy_job:
+  stage: deploy
+  environment:
+    name: review
+    url: http://www-xx-c.review.hydee.cn
+  # 指定执行脚本的分支，其他分支不执行
+  only:
+    - review
+  script:
+    - pwd
+    - cd /builds/hydee/app_template
+    - cnpm install
+    - cnpm run build:review
+    - node deploy.js customer review
+    # scp复制发布文件到服务器
+    - scp -r /builds/hydee/app_template/dist/* root@$DEPLOY_SERVER_DEV:$WEB_DIR
+    # 修改目标服务器下文件归属
+    - ssh root@$DEPLOY_SERVER_DEV "chown -R www:www /www/wwwroot/app_template"
+  tags:
+    - nodevue
